@@ -5,6 +5,6 @@ A minimalist, dark-first fintech dashboard for logging and managing employee pay
 ## Tech Stack
 - **Backend:** Laravel 11 (PHP)
 - **Frontend:** Vue 3 (Composition API) & Inertia.js
-- **Styling:** Tailwind CSS (Custom flat theme, zero rounded corners, zero shadows)
-- **Database:** SQLite
+- **Styling:** Tailwind CSS 
+- **Database:** PostgreSQL
 - **Toast Notifications:** `vue-toast-notification` (with custom CSS overrides)
