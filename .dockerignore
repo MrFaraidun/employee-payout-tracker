@@ -18,3 +18,5 @@ tests/
 phpunit.xml
 /public/hot
 /public/build
+/database/*.sqlite
+
