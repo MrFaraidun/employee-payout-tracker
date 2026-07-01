@@ -16,7 +16,7 @@ class RoleController extends Controller
 {
     public function index(): Response
     {
-        if (Auth::user()->role !== UserRoleEnum::SuperAdmin) {
+        if (Auth::user()->role !== UserRoleEnum::SuperAdmin && !Auth::user()->can('view roles')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -37,7 +37,7 @@ class RoleController extends Controller
 
     public function create(): Response
     {
-        if (Auth::user()->role !== UserRoleEnum::SuperAdmin) {
+        if (Auth::user()->role !== UserRoleEnum::SuperAdmin && !Auth::user()->can('create roles')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -56,7 +56,7 @@ class RoleController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        if (Auth::user()->role !== UserRoleEnum::SuperAdmin) {
+        if (Auth::user()->role !== UserRoleEnum::SuperAdmin && !Auth::user()->can('create roles')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -79,8 +79,12 @@ class RoleController extends Controller
 
     public function edit(Role $role): Response
     {
-        if (Auth::user()->role !== UserRoleEnum::SuperAdmin) {
+        if (Auth::user()->role !== UserRoleEnum::SuperAdmin && !Auth::user()->can('update roles')) {
             abort(403, 'Unauthorized action.');
+        }
+
+        if (in_array($role->name, ['SuperAdmin', 'Admin', 'Accountant']) && Auth::user()->role !== UserRoleEnum::SuperAdmin) {
+            abort(403, 'Only SuperAdmin can modify default system roles.');
         }
 
         $permissions = Permission::all()->map(function ($perm) {
@@ -102,8 +106,12 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role): RedirectResponse
     {
-        if (Auth::user()->role !== UserRoleEnum::SuperAdmin) {
+        if (Auth::user()->role !== UserRoleEnum::SuperAdmin && !Auth::user()->can('update roles')) {
             abort(403, 'Unauthorized action.');
+        }
+
+        if (in_array($role->name, ['SuperAdmin', 'Admin', 'Accountant']) && Auth::user()->role !== UserRoleEnum::SuperAdmin) {
+            abort(403, 'Only SuperAdmin can modify default system roles.');
         }
 
         $request->validate([
@@ -129,7 +137,7 @@ class RoleController extends Controller
 
     public function destroy(Role $role): RedirectResponse
     {
-        if (Auth::user()->role !== UserRoleEnum::SuperAdmin) {
+        if (Auth::user()->role !== UserRoleEnum::SuperAdmin && !Auth::user()->can('delete roles')) {
             abort(403, 'Unauthorized action.');
         }
 

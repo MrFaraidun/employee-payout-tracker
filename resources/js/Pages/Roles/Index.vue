@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import DataTable from '@/Components/DataTable.vue';
 import SearchInput from '@/Components/SearchInput.vue';
@@ -15,10 +15,16 @@ const props = defineProps({
     },
 });
 
+const page = usePage();
 const toast = useToast();
 const searchQuery = ref('');
 const showDeleteDialog = ref(false);
 const roleToDelete = ref(null);
+
+const isSuperAdmin = computed(() => page.props.auth.user?.role === 'SuperAdmin');
+const hasCreatePermission = computed(() => page.props.auth.permissions.includes('create roles') || isSuperAdmin.value);
+const hasEditPermission = computed(() => page.props.auth.permissions.includes('update roles') || isSuperAdmin.value);
+const hasDeletePermission = computed(() => page.props.auth.permissions.includes('delete roles') || isSuperAdmin.value);
 
 const filteredRoles = computed(() => {
     if (!searchQuery.value) return props.roles;
@@ -72,6 +78,7 @@ const confirmDelete = () => {
                 </div>
                 
                 <Link
+                    v-if="hasCreatePermission"
                     :href="route('roles.create')"
                     class="px-5 py-2.5 bg-brand-primary text-white font-sans font-semibold text-xs tracking-wide rounded-xl hover:opacity-90 active:scale-[0.98] transition-all duration-200 cursor-pointer select-none whitespace-nowrap shadow-sm text-center self-start sm:self-auto"
                 >
@@ -123,6 +130,7 @@ const confirmDelete = () => {
                             <div class="flex items-center gap-4 text-brand-text-muted">
                                 <!-- Edit Role -->
                                 <Link
+                                    v-if="hasEditPermission && (!isSystemRole(item.name) || isSuperAdmin)"
                                     :href="route('roles.edit', item.id)"
                                     class="hover:text-emerald-500 transition-colors duration-150"
                                     title="Edit Permission Matrix"
@@ -134,7 +142,7 @@ const confirmDelete = () => {
 
                                 <!-- Delete Role (Disabled for System Roles) -->
                                 <button
-                                    v-if="!isSystemRole(item.name)"
+                                    v-if="hasDeletePermission && !isSystemRole(item.name)"
                                     @click="openDeleteModal(item)"
                                     class="hover:text-red-500 transition-colors duration-150 cursor-pointer focus:outline-none"
                                     title="Delete Role"
@@ -144,7 +152,7 @@ const confirmDelete = () => {
                                     </svg>
                                 </button>
                                 
-                                <span v-else class="text-[10px] font-bold text-zinc-300 dark:text-zinc-700 select-none">
+                                <span v-if="isSystemRole(item.name) && !isSuperAdmin" class="text-[10px] font-bold text-zinc-300 dark:text-zinc-700 select-none" title="System roles can only be edited by SuperAdmin">
                                     Locked
                                 </span>
                             </div>

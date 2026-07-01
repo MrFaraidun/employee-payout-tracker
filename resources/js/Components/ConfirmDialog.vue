@@ -48,7 +48,7 @@ defineEmits(['confirm', 'close']);
                     type="button"
                     @click="$emit('close')"
                     :disabled="processing"
-                    class="px-4 py-2.5 bg-brand-input hover:bg-brand-text text-brand-text-secondary hover:text-white border border-zinc-200 dark:border-zinc-800 rounded-xl transition-all duration-150 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none"
+                    class="px-4 py-2.5 bg-brand-input hover:bg-zinc-100 dark:hover:bg-zinc-800 text-brand-text-secondary border border-zinc-200 dark:border-zinc-800 rounded-xl transition-all duration-150 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none"
                 >
                     {{ cancelText }}
                 </button>
