@@ -27,6 +27,10 @@ const hasCreatePermission = computed(() => page.props.auth.permissions.includes(
 const hasEditPermission = computed(() => page.props.auth.permissions.includes('update roles') || isSuperAdmin.value || isAdmin.value);
 const hasDeletePermission = computed(() => page.props.auth.permissions.includes('delete roles') || isSuperAdmin.value || isAdmin.value);
 
+console.log('Roles/Index page props auth:', page.props.auth);
+console.log('isSuperAdmin:', isSuperAdmin.value, 'isAdmin:', isAdmin.value);
+console.log('hasEditPermission:', hasEditPermission.value, 'hasDeletePermission:', hasDeletePermission.value);
+
 const filteredRoles = computed(() => {
     if (!searchQuery.value) return props.roles;
     const query = searchQuery.value.toLowerCase();
