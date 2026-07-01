@@ -97,62 +97,70 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // 3. Create Organizations
-        $acreTech = Organization::create([
-            'name' => 'Acre Tech',
-            'status' => OrganizationStatusEnum::Active,
-        ]);
+        $acreTech = Organization::firstOrCreate(
+            ['name' => 'Acre Tech'],
+            ['status' => OrganizationStatusEnum::Active]
+        );
 
-        $basraPayout = Organization::create([
-            'name' => 'Basra Payout Corp',
-            'status' => OrganizationStatusEnum::Active,
-        ]);
+        $basraPayout = Organization::firstOrCreate(
+            ['name' => 'Basra Payout Corp'],
+            ['status' => OrganizationStatusEnum::Active]
+        );
 
         // 4. Create SuperAdmin (No Organization)
-        $superAdmin = User::create([
-            'organization_id' => null,
-            'name' => 'Super Admin',
-            'email' => 'super@example.com',
-            'password' => Hash::make('password'),
-            'role' => UserRoleEnum::SuperAdmin,
-            'status' => UserStatusEnum::Active,
-            'email_verified_at' => now(),
-        ]);
-        $superAdmin->assignRole($superAdminRole);
+        $superAdmin = User::updateOrCreate(
+            ['email' => 'super@example.com'],
+            [
+                'organization_id' => null,
+                'name' => 'Super Admin',
+                'password' => Hash::make('password'),
+                'role' => UserRoleEnum::SuperAdmin,
+                'status' => UserStatusEnum::Active,
+                'email_verified_at' => now(),
+            ]
+        );
+        $superAdmin->syncRoles([$superAdminRole]);
 
         // 5. Create Acre Tech Users
-        $acreAdmin = User::create([
-            'organization_id' => $acreTech->id,
-            'name' => 'Acre Admin',
-            'email' => 'admin@acre.com',
-            'password' => Hash::make('password'),
-            'role' => UserRoleEnum::Admin,
-            'status' => UserStatusEnum::Active,
-            'email_verified_at' => now(),
-        ]);
-        $acreAdmin->assignRole($adminRole);
+        $acreAdmin = User::updateOrCreate(
+            ['email' => 'admin@acre.com'],
+            [
+                'organization_id' => $acreTech->id,
+                'name' => 'Acre Admin',
+                'password' => Hash::make('password'),
+                'role' => UserRoleEnum::Admin,
+                'status' => UserStatusEnum::Active,
+                'email_verified_at' => now(),
+            ]
+        );
+        $acreAdmin->syncRoles([$adminRole]);
 
-        $acreAccountant = User::create([
-            'organization_id' => $acreTech->id,
-            'name' => 'Acre Accountant',
-            'email' => 'accountant@acre.com',
-            'password' => Hash::make('password'),
-            'role' => UserRoleEnum::Accountant,
-            'status' => UserStatusEnum::Active,
-            'email_verified_at' => now(),
-        ]);
-        $acreAccountant->assignRole($accountantRole);
+        $acreAccountant = User::updateOrCreate(
+            ['email' => 'accountant@acre.com'],
+            [
+                'organization_id' => $acreTech->id,
+                'name' => 'Acre Accountant',
+                'password' => Hash::make('password'),
+                'role' => UserRoleEnum::Accountant,
+                'status' => UserStatusEnum::Active,
+                'email_verified_at' => now(),
+            ]
+        );
+        $acreAccountant->syncRoles([$accountantRole]);
 
         // 6. Create Basra Users
-        $basraAdmin = User::create([
-            'organization_id' => $basraPayout->id,
-            'name' => 'Basra Admin',
-            'email' => 'admin@basra.com',
-            'password' => Hash::make('password'),
-            'role' => UserRoleEnum::Admin,
-            'status' => UserStatusEnum::Active,
-            'email_verified_at' => now(),
-        ]);
-        $basraAdmin->assignRole($adminRole);
+        $basraAdmin = User::updateOrCreate(
+            ['email' => 'admin@basra.com'],
+            [
+                'organization_id' => $basraPayout->id,
+                'name' => 'Basra Admin',
+                'password' => Hash::make('password'),
+                'role' => UserRoleEnum::Admin,
+                'status' => UserStatusEnum::Active,
+                'email_verified_at' => now(),
+            ]
+        );
+        $basraAdmin->syncRoles([$adminRole]);
 
         // 7. Seed Acre Tech Employees & Payouts
         $employeesData = [
@@ -164,25 +172,31 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($employeesData as $index => $emp) {
-            $employee = Employee::create([
-                'organization_id' => $acreTech->id,
-                'name' => $emp['name'],
-                'employee_code' => $emp['code'],
-                'department' => $emp['dept'],
-                'position' => $emp['pos'],
-                'status' => EmployeeStatusEnum::Active,
-            ]);
+            $employee = Employee::firstOrCreate(
+                ['employee_code' => $emp['code']],
+                [
+                    'organization_id' => $acreTech->id,
+                    'name' => $emp['name'],
+                    'department' => $emp['dept'],
+                    'position' => $emp['pos'],
+                    'status' => EmployeeStatusEnum::Active,
+                ]
+            );
 
-            // Seed a Payout for each
-            Payout::create([
-                'organization_id' => $acreTech->id,
-                'employee_id' => $employee->id,
-                'task' => 'Monthly contract delivery for ' . $emp['name'],
-                'amount_iqd' => 150000 + ($index * 12500),
-                'status' => $index % 2 === 0 ? PayoutStatusEnum::Completed : PayoutStatusEnum::Pending,
-                'paid_at' => $index % 2 === 0 ? now()->subDays(5) : null,
-                'created_by' => $acreAccountant->id,
-            ]);
+            // Seed a Payout for each if not already seeded
+            Payout::firstOrCreate(
+                [
+                    'organization_id' => $acreTech->id,
+                    'employee_id' => $employee->id,
+                    'task' => 'Monthly contract delivery for ' . $emp['name'],
+                ],
+                [
+                    'amount_iqd' => 150000 + ($index * 12500),
+                    'status' => $index % 2 === 0 ? PayoutStatusEnum::Completed : PayoutStatusEnum::Pending,
+                    'paid_at' => $index % 2 === 0 ? now()->subDays(5) : null,
+                    'created_by' => $acreAccountant->id,
+                ]
+            );
         }
 
         // 8. Seed Basra Employees & Payouts
@@ -192,23 +206,29 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($basraEmployees as $index => $emp) {
-            $employee = Employee::create([
-                'organization_id' => $basraPayout->id,
-                'name' => $emp['name'],
-                'employee_code' => $emp['code'],
-                'department' => $emp['dept'],
-                'position' => $emp['pos'],
-                'status' => EmployeeStatusEnum::Active,
-            ]);
+            $employee = Employee::firstOrCreate(
+                ['employee_code' => $emp['code']],
+                [
+                    'organization_id' => $basraPayout->id,
+                    'name' => $emp['name'],
+                    'department' => $emp['dept'],
+                    'position' => $emp['pos'],
+                    'status' => EmployeeStatusEnum::Active,
+                ]
+            );
 
-            Payout::create([
-                'organization_id' => $basraPayout->id,
-                'employee_id' => $employee->id,
-                'task' => 'Basra operations payout ' . $emp['name'],
-                'amount_iqd' => 200000,
-                'status' => PayoutStatusEnum::Pending,
-                'created_by' => $basraAdmin->id,
-            ]);
+            Payout::firstOrCreate(
+                [
+                    'organization_id' => $basraPayout->id,
+                    'employee_id' => $employee->id,
+                    'task' => 'Basra operations payout ' . $emp['name'],
+                ],
+                [
+                    'amount_iqd' => 200000,
+                    'status' => PayoutStatusEnum::Pending,
+                    'created_by' => $basraAdmin->id,
+                ]
+            );
         }
     }
 }
