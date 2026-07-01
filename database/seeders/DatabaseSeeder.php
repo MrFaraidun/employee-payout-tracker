@@ -26,12 +26,35 @@ class DatabaseSeeder extends Seeder
 
         // 1. Create Permissions
         $permissions = [
-            'manage organizations',
-            'manage admins',
-            'manage employees',
-            'manage payouts',
-            'delete payouts',
+            // Organizations
+            'view organizations',
+            'create organizations',
+            'update organizations',
+            'delete organizations',
+
+            // Admins & Users
+            'view admins',
+            'create admins',
+            'update admins',
+            'delete admins',
+
+            // Roles & Permissions
+            'view roles',
+            'create roles',
+            'update roles',
+            'delete roles',
+
+            // Employees
+            'view employees',
+            'create employees',
+            'update employees',
+            'delete employees',
+
+            // Payouts
             'view payouts',
+            'create payouts',
+            'update payouts',
+            'delete payouts',
         ];
 
         foreach ($permissions as $permission) {
@@ -45,17 +68,32 @@ class DatabaseSeeder extends Seeder
 
         $adminRole = Role::firstOrCreate(['name' => UserRoleEnum::Admin->value, 'guard_name' => 'web']);
         $adminRole->syncPermissions([
-            'manage admins',
-            'manage employees',
-            'manage payouts',
-            'delete payouts',
+            'view organizations',
+            'update organizations',
+            'view admins',
+            'create admins',
+            'update admins',
+            'delete admins',
+            'view roles',
+            'create roles',
+            'update roles',
+            'delete roles',
+            'view employees',
+            'create employees',
+            'update employees',
+            'delete employees',
             'view payouts',
+            'create payouts',
+            'update payouts',
+            'delete payouts',
         ]);
 
         $accountantRole = Role::firstOrCreate(['name' => UserRoleEnum::Accountant->value, 'guard_name' => 'web']);
         $accountantRole->syncPermissions([
-            'manage payouts',
+            'view employees',
             'view payouts',
+            'create payouts',
+            'update payouts',
         ]);
 
         // 3. Create Organizations

@@ -74,7 +74,7 @@ class RoleController extends Controller
             $role->syncPermissions($request->permissions);
         }
 
-        return redirect()->route('roles.index');
+        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
     }
 
     public function edit(Role $role): Response
@@ -124,7 +124,7 @@ class RoleController extends Controller
 
         $role->syncPermissions($request->permissions ?? []);
 
-        return redirect()->route('roles.index');
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
     }
 
     public function destroy(Role $role): RedirectResponse
@@ -140,6 +140,6 @@ class RoleController extends Controller
 
         $role->delete();
 
-        return redirect()->route('roles.index');
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
     }
 }

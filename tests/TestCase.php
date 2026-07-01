@@ -19,12 +19,26 @@ abstract class TestCase extends BaseTestCase
 
         // Create Permissions
         $permissions = [
-            'manage organizations',
-            'manage admins',
-            'manage employees',
-            'manage payouts',
-            'delete payouts',
+            'view organizations',
+            'create organizations',
+            'update organizations',
+            'delete organizations',
+            'view admins',
+            'create admins',
+            'update admins',
+            'delete admins',
+            'view roles',
+            'create roles',
+            'update roles',
+            'delete roles',
+            'view employees',
+            'create employees',
+            'update employees',
+            'delete employees',
             'view payouts',
+            'create payouts',
+            'update payouts',
+            'delete payouts',
         ];
 
         foreach ($permissions as $perm) {
@@ -32,7 +46,31 @@ abstract class TestCase extends BaseTestCase
         }
 
         // Assign Permissions to Roles
-        $adminRole->syncPermissions(['manage admins', 'manage employees', 'manage payouts', 'delete payouts', 'view payouts']);
-        $accountantRole->syncPermissions(['view payouts', 'manage payouts']);
+        $adminRole->syncPermissions([
+            'view organizations',
+            'update organizations',
+            'view admins',
+            'create admins',
+            'update admins',
+            'delete admins',
+            'view roles',
+            'create roles',
+            'update roles',
+            'delete roles',
+            'view employees',
+            'create employees',
+            'update employees',
+            'delete employees',
+            'view payouts',
+            'create payouts',
+            'update payouts',
+            'delete payouts',
+        ]);
+        $accountantRole->syncPermissions([
+            'view employees',
+            'view payouts',
+            'create payouts',
+            'update payouts',
+        ]);
     }
 }

@@ -15,7 +15,7 @@ class OrganizationPolicy
 
     public function view(User $user, Organization $organization): bool
     {
-        return $user->organization_id === $organization->id;
+        return $user->organization_id === $organization->id && $user->can('view organizations');
     }
 
     public function create(User $user): bool
@@ -25,7 +25,7 @@ class OrganizationPolicy
 
     public function update(User $user, Organization $organization): bool
     {
-        return $user->organization_id === $organization->id && $user->can('manage organizations');
+        return $user->organization_id === $organization->id && $user->can('update organizations');
     }
 
     public function delete(User $user, Organization $organization): bool

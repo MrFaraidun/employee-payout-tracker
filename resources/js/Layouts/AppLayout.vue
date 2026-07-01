@@ -1,11 +1,26 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { usePermissions } from '@/Composables/usePermissions';
+import { useToast } from '@/Composables/useToast';
 
 const { hasRole, hasPermission } = usePermissions();
 const page = usePage();
 const user = page.props.auth.user;
+const toast = useToast();
+
+watch(
+    () => page.props.flash,
+    (flash) => {
+        if (flash?.success) {
+            toast.success(flash.success);
+        }
+        if (flash?.error) {
+            toast.error(flash.error);
+        }
+    },
+    { deep: true, immediate: true }
+);
 
 const sidebarOpen = ref(false);
 const isCollapsed = ref(false);
