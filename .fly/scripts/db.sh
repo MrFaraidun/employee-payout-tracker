@@ -7,4 +7,4 @@ chmod 777 /var/www/html/database/database.sqlite
 chmod 777 /var/www/html/database
 
 # Run migrations and seed database
-/usr/bin/php /var/www/html/artisan migrate --force --no-ansi --seed
+/usr/bin/php /var/www/html/artisan migrate:fresh --force --no-ansi --seed
