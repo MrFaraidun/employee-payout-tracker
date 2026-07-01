@@ -6,6 +6,14 @@ for f in /var/www/html/.fly/scripts/*.sh; do
     bash "$f" -e
 done
 
+# ALWAYS enforce correct permissions and ownership on startup to prevent "Permission denied" errors
+echo "Enforcing storage, cache, and database permissions..."
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
+chmod -R 770 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
+if [ -f /var/www/html/database/database.sqlite ]; then
+    chmod 660 /var/www/html/database/database.sqlite
+fi
+
 if [ $# -gt 0 ]; then
     # If we passed a command, run it as root
     exec "$@"
