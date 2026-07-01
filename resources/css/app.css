@@ -2,42 +2,138 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Toast overrides for zero rounded corners, zero shadows and dark fintech theme */
-.v-toast__item {
-    border-radius: 0px !important;
-    box-shadow: none !important;
-    font-family: 'Inter', sans-serif !important;
-    font-size: 11px !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    font-weight: 600 !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    padding: 10px 16px !important;
-    min-height: auto !important;
+@layer base {
+    :root {
+        /* Soft, Premium Light Theme (Soft Structuralism / Ethereal Glass) */
+        --bg-main: #f8fafc;
+        --bg-sidebar: #ffffff;
+        --bg-input: #ffffff;
+        --bg-surface: #ffffff;
+        
+        --card-from: #ffffff;
+        --card-to: #ffffff;
+        
+        --primary: #059669;
+        --primary-glow: rgba(5, 150, 105, 0.08);
+        --primary-text: #ffffff;
+        
+        --border-glass: rgba(226, 232, 240, 0.8);
+        --border-inner: rgba(241, 245, 249, 0.8);
+        --border-main: #e2e8f0;
+        
+        --bg-highlight: #ecfdf5;
+        --text-highlight: #047857;
+        --border-highlight: #a7f3d0;
+        
+        --text-primary: #0f172a;
+        --text-secondary: #334155;
+        --text-muted: #57606a;
+
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+    }
+
+    .dark {
+        /* Premium, High-End Dark Theme (Ethereal Glass / Dark Tech) */
+        --bg-main: #09090b;
+        --bg-sidebar: #09090b;
+        --bg-input: #18181b;
+        --bg-surface: #18181b;
+        
+        --card-from: #18181b;
+        --card-to: #18181b;
+        
+        --primary: #10b981;
+        --primary-glow: rgba(16, 185, 129, 0.12);
+        --primary-text: #09090b;
+        
+        --border-glass: rgba(39, 39, 42, 0.6);
+        --border-inner: rgba(39, 39, 42, 0.4);
+        --border-main: #27272a;
+        
+        --bg-highlight: rgba(16, 185, 129, 0.08);
+        --text-highlight: #34d399;
+        --border-highlight: rgba(16, 185, 129, 0.25);
+        
+        --text-primary: #f4f4f5;
+        --text-secondary: #d4d4d8;
+        --text-muted: #71717a;
+
+        --success: #10b981;
+        --warning: #fbbf24;
+        --danger: #f87171;
+    }
+
+    /* Selection styles */
+    ::selection {
+        background-color: var(--primary-glow);
+        color: var(--primary);
+    }
+
+    /* Scrollbar customization - Modern Rounded Scrollbars */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: var(--border-glass);
+        border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--primary);
+    }
+
+    /* Style native calendar picker indicator in dark mode */
+    .dark input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+        cursor: pointer;
+    }
 }
 
-.v-toast__item--success {
-    background-color: #0f172a !important; /* bg-surface-900 */
-    color: #10b981 !important; /* text-emerald-500 */
-    border-color: rgba(16, 185, 129, 0.2) !important;
-}
+@layer utilities {
+    /* Glassmorphism Cards and Panels */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+        border-radius: 12px;
+    }
 
-.v-toast__item--info, .v-toast__item--warning {
-    background-color: #0f172a !important;
-    color: #fbbf24 !important; /* amber-400 */
-    border-color: rgba(251, 191, 36, 0.2) !important;
-}
+    .dark .glass-card {
+        background: rgba(24, 24, 27, 0.75);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(63, 63, 70, 0.4);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+    }
 
-.v-toast__item--error, .v-toast__item--danger {
-    background-color: #0f172a !important;
-    color: #f43f5e !important; /* text-rose-500 */
-    border-color: rgba(244, 63, 94, 0.2) !important;
-}
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(226, 232, 240, 0.6);
+        box-shadow: 0 4px 30px rgba(15, 23, 42, 0.02);
+        border-radius: 16px;
+    }
 
-.v-toast__text {
-    padding: 0 !important;
-}
+    .dark .glass-panel {
+        background: rgba(15, 15, 18, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(63, 63, 70, 0.3);
+        box-shadow: 0 4px 35px rgba(0, 0, 0, 0.3);
+        border-radius: 16px;
+    }
 
-.v-toast__icon {
-    display: none !important; /* Hide default icons to keep it extremely clean or let's use custom icons */
+    /* Subtly Animated Focus & Active States */
+    .btn-active-scale:active {
+        transform: scale(0.97);
+    }
 }

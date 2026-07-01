@@ -2,30 +2,33 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\PayoutStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePayoutRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            'employee_id' => 'required|exists:employees,id',
-            'task' => 'required|string|max:255',
-            'amount_iqd' => 'required|integer|min:1',
-            'status' => 'required|in:pending,processing,completed',
+            'organization_id' => [
+                'required',
+                Rule::exists('organizations', 'id')
+            ],
+            'employee_id' => [
+                'required',
+                Rule::exists('employees', 'id')->where(function ($query) {
+                    $query->where('organization_id', $this->organization_id);
+                })
+            ],
+            'task' => ['required', 'string', 'max:255'],
+            'amount_iqd' => ['required', 'integer', 'min:1'],
+            'status' => ['required', Rule::enum(PayoutStatusEnum::class)],
         ];
     }
 }
