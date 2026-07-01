@@ -269,7 +269,7 @@ const clearTabPermissions = () => {
                                     type="checkbox"
                                     :checked="modelValue.includes(item.viewPerm)"
                                     @change="togglePermission(item.viewPerm)"
-                                    class="h-4.5 w-4.5 rounded border-zinc-350 dark:border-zinc-700 text-emerald-500 focus:ring-emerald-500/10 focus:ring-4 cursor-pointer transition-all duration-150"
+                                    class="h-5 w-5 rounded border-zinc-350 dark:border-zinc-700 text-emerald-500 focus:ring-emerald-500/10 focus:ring-4 cursor-pointer transition-all duration-150"
                                 />
                             </td>
 
@@ -279,7 +279,7 @@ const clearTabPermissions = () => {
                                     type="checkbox"
                                     :checked="modelValue.includes(item.createPerm)"
                                     @change="togglePermission(item.createPerm)"
-                                    class="h-4.5 w-4.5 rounded border-zinc-350 dark:border-zinc-700 text-emerald-500 focus:ring-emerald-500/10 focus:ring-4 cursor-pointer transition-all duration-150"
+                                    class="h-5 w-5 rounded border-zinc-350 dark:border-zinc-700 text-emerald-500 focus:ring-emerald-500/10 focus:ring-4 cursor-pointer transition-all duration-150"
                                 />
                             </td>
 
@@ -289,7 +289,7 @@ const clearTabPermissions = () => {
                                     type="checkbox"
                                     :checked="modelValue.includes(item.updatePerm)"
                                     @change="togglePermission(item.updatePerm)"
-                                    class="h-4.5 w-4.5 rounded border-zinc-350 dark:border-zinc-700 text-emerald-500 focus:ring-emerald-500/10 focus:ring-4 cursor-pointer transition-all duration-150"
+                                    class="h-5 w-5 rounded border-zinc-350 dark:border-zinc-700 text-emerald-500 focus:ring-emerald-500/10 focus:ring-4 cursor-pointer transition-all duration-150"
                                 />
                             </td>
 
@@ -299,7 +299,7 @@ const clearTabPermissions = () => {
                                     type="checkbox"
                                     :checked="modelValue.includes(item.deletePerm)"
                                     @change="togglePermission(item.deletePerm)"
-                                    class="h-4.5 w-4.5 rounded border-zinc-350 dark:border-zinc-700 text-emerald-500 focus:ring-emerald-500/10 focus:ring-4 cursor-pointer transition-all duration-150"
+                                    class="h-5 w-5 rounded border-zinc-350 dark:border-zinc-700 text-emerald-500 focus:ring-emerald-500/10 focus:ring-4 cursor-pointer transition-all duration-150"
                                 />
                             </td>
                         </tr>
