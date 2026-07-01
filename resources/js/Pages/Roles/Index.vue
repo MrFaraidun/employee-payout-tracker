@@ -37,10 +37,6 @@ const isSystemRole = (name) => {
 };
 
 const openDeleteModal = (role) => {
-    if (isSystemRole(role.name)) {
-        toast.error('System roles cannot be deleted.');
-        return;
-    }
     roleToDelete.value = role;
     showDeleteDialog.value = true;
 };
@@ -130,7 +126,7 @@ const confirmDelete = () => {
                             <div class="flex items-center gap-4 text-brand-text-muted">
                                 <!-- Edit Role -->
                                 <Link
-                                    v-if="hasEditPermission && (!isSystemRole(item.name) || isSuperAdmin)"
+                                    v-if="hasEditPermission"
                                     :href="route('roles.edit', item.id)"
                                     class="hover:text-emerald-500 transition-colors duration-150"
                                     title="Edit Permission Matrix"
@@ -140,9 +136,9 @@ const confirmDelete = () => {
                                     </svg>
                                 </Link>
 
-                                <!-- Delete Role (Disabled for System Roles) -->
+                                <!-- Delete Role -->
                                 <button
-                                    v-if="hasDeletePermission && !isSystemRole(item.name)"
+                                    v-if="hasDeletePermission"
                                     @click="openDeleteModal(item)"
                                     class="hover:text-red-500 transition-colors duration-150 cursor-pointer focus:outline-none"
                                     title="Delete Role"
@@ -151,10 +147,6 @@ const confirmDelete = () => {
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
                                 </button>
-                                
-                                <span v-if="isSystemRole(item.name) && !isSuperAdmin" class="text-[10px] font-bold text-zinc-300 dark:text-zinc-700 select-none" title="System roles can only be edited by SuperAdmin">
-                                    Locked
-                                </span>
                             </div>
                         </td>
                     </template>
