@@ -14,7 +14,7 @@ class EmployeePolicy
 
     public function view(User $user, Employee $employee): bool
     {
-        return $user->organization_id === $employee->organization_id && $user->can('view employees');
+        return $user->can('view employees') && ($user->role === \App\Enums\UserRoleEnum::SuperAdmin || $user->organization_id === $employee->organization_id);
     }
 
     public function create(User $user): bool
@@ -24,11 +24,11 @@ class EmployeePolicy
 
     public function update(User $user, Employee $employee): bool
     {
-        return $user->can('update employees') && $user->organization_id === $employee->organization_id;
+        return $user->can('update employees') && ($user->role === \App\Enums\UserRoleEnum::SuperAdmin || $user->organization_id === $employee->organization_id);
     }
 
     public function delete(User $user, Employee $employee): bool
     {
-        return $user->can('delete employees') && $user->organization_id === $employee->organization_id;
+        return $user->can('delete employees') && ($user->role === \App\Enums\UserRoleEnum::SuperAdmin || $user->organization_id === $employee->organization_id);
     }
 }

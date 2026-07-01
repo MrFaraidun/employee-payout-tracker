@@ -162,9 +162,9 @@ onUnmounted(() => {
                     </div>
                 </Link>
 
-                <!-- SuperAdmin Only -->
+                <!-- Organizations -->
                 <Link
-                    v-if="hasRole('SuperAdmin')"
+                    v-if="hasPermission('view organizations')"
                     :href="route('organizations.index')"
                     class="flex items-center rounded-xl border transition-all duration-200 group"
                     :class="[
@@ -183,9 +183,9 @@ onUnmounted(() => {
                     </div>
                 </Link>
 
-                <!-- SuperAdmin Only: Roles & Permissions -->
+                <!-- Roles & Permissions -->
                 <Link
-                    v-if="hasRole('SuperAdmin')"
+                    v-if="hasPermission('view roles')"
                     :href="route('roles.index')"
                     class="flex items-center rounded-xl border transition-all duration-200 group"
                     :class="[
@@ -204,9 +204,9 @@ onUnmounted(() => {
                     </div>
                 </Link>
 
-                <!-- SuperAdmin / Admin -->
+                <!-- Admins & Users -->
                 <Link
-                    v-if="hasPermission('manage admins')"
+                    v-if="hasPermission('view admins')"
                     :href="route('users.index')"
                     class="flex items-center rounded-xl border transition-all duration-200 group"
                     :class="[
@@ -225,8 +225,9 @@ onUnmounted(() => {
                     </div>
                 </Link>
 
+                <!-- Employees -->
                 <Link
-                    v-if="hasPermission('manage employees') || hasRole('Accountant')"
+                    v-if="hasPermission('view employees')"
                     :href="route('employees.index')"
                     class="flex items-center rounded-xl border transition-all duration-200 group"
                     :class="[
@@ -245,7 +246,9 @@ onUnmounted(() => {
                     </div>
                 </Link>
 
+                <!-- Payout Logs -->
                 <Link
+                    v-if="hasPermission('view payouts')"
                     :href="route('payouts.index')"
                     class="flex items-center rounded-xl border transition-all duration-200 group"
                     :class="[

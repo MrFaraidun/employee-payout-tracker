@@ -14,7 +14,7 @@ class PayoutPolicy
 
     public function view(User $user, Payout $payout): bool
     {
-        return $user->organization_id === $payout->organization_id && $user->can('view payouts');
+        return $user->can('view payouts') && ($user->role === \App\Enums\UserRoleEnum::SuperAdmin || $user->organization_id === $payout->organization_id);
     }
 
     public function create(User $user): bool
@@ -24,11 +24,11 @@ class PayoutPolicy
 
     public function update(User $user, Payout $payout): bool
     {
-        return $user->can('update payouts') && $user->organization_id === $payout->organization_id;
+        return $user->can('update payouts') && ($user->role === \App\Enums\UserRoleEnum::SuperAdmin || $user->organization_id === $payout->organization_id);
     }
 
     public function delete(User $user, Payout $payout): bool
     {
-        return $user->can('delete payouts') && $user->organization_id === $payout->organization_id;
+        return $user->can('delete payouts') && ($user->role === \App\Enums\UserRoleEnum::SuperAdmin || $user->organization_id === $payout->organization_id);
     }
 }

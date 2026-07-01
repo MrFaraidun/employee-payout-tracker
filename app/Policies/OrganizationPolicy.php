@@ -9,8 +9,7 @@ class OrganizationPolicy
 {
     public function viewAny(User $user): bool
     {
-        // Only SuperAdmin can list all organizations, but Admin/Accountant can view their own if routed
-        return false; 
+        return $user->hasRole(\App\Enums\UserRoleEnum::SuperAdmin->value) || $user->can('view organizations');
     }
 
     public function view(User $user, Organization $organization): bool

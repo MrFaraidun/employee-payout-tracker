@@ -13,7 +13,7 @@ class UserPolicy
 
     public function view(User $user, User $model): bool
     {
-        return $user->can('view admins') && $user->organization_id === $model->organization_id;
+        return $user->can('view admins') && ($user->role === \App\Enums\UserRoleEnum::SuperAdmin || $user->organization_id === $model->organization_id);
     }
 
     public function create(User $user): bool
@@ -23,11 +23,11 @@ class UserPolicy
 
     public function update(User $user, User $model): bool
     {
-        return $user->can('update admins') && $user->organization_id === $model->organization_id;
+        return $user->can('update admins') && ($user->role === \App\Enums\UserRoleEnum::SuperAdmin || $user->organization_id === $model->organization_id);
     }
 
     public function delete(User $user, User $model): bool
     {
-        return $user->can('delete admins') && $user->organization_id === $model->organization_id && $user->id !== $model->id;
+        return $user->can('delete admins') && ($user->role === \App\Enums\UserRoleEnum::SuperAdmin || $user->organization_id === $model->organization_id) && $user->id !== $model->id;
     }
 }

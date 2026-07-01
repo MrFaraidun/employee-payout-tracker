@@ -36,9 +36,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'role' => UserRoleEnum::class,
             'status' => UserStatusEnum::class,
         ];
+    }
+
+    public function getRoleAttribute($value)
+    {
+        return UserRoleEnum::tryFrom($value) ?? $value;
+    }
+
+    public function setRoleAttribute($value)
+    {
+        $this->attributes['role'] = $value instanceof UserRoleEnum ? $value->value : $value;
     }
 
     public function organization(): BelongsTo
