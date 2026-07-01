@@ -22,9 +22,10 @@ const showDeleteDialog = ref(false);
 const roleToDelete = ref(null);
 
 const isSuperAdmin = computed(() => page.props.auth.user?.role === 'SuperAdmin');
-const hasCreatePermission = computed(() => page.props.auth.permissions.includes('create roles') || isSuperAdmin.value);
-const hasEditPermission = computed(() => page.props.auth.permissions.includes('update roles') || isSuperAdmin.value);
-const hasDeletePermission = computed(() => page.props.auth.permissions.includes('delete roles') || isSuperAdmin.value);
+const isAdmin = computed(() => page.props.auth.user?.role === 'Admin');
+const hasCreatePermission = computed(() => page.props.auth.permissions.includes('create roles') || isSuperAdmin.value || isAdmin.value);
+const hasEditPermission = computed(() => page.props.auth.permissions.includes('update roles') || isSuperAdmin.value || isAdmin.value);
+const hasDeletePermission = computed(() => page.props.auth.permissions.includes('delete roles') || isSuperAdmin.value || isAdmin.value);
 
 const filteredRoles = computed(() => {
     if (!searchQuery.value) return props.roles;
