@@ -21,12 +21,12 @@ console_command = 'php /var/www/html/artisan tinker'
   SESSION_DRIVER = 'cookie'
   SESSION_SECURE_COOKIE = 'true'
   DB_CONNECTION = 'sqlite'
-  DB_DATABASE = '/data/database.sqlite'
+  DB_DATABASE = '/var/www/html/storage/database/database.sqlite'
   CACHE_STORE = 'file'
 
 [mounts]
   source = 'payout_data'
-  destination = '/data'
+  destination = '/var/www/html/storage/database'
 
 [http_service]
   internal_port = 8080

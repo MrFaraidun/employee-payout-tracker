@@ -8,10 +8,10 @@ done
 
 # ALWAYS enforce correct permissions and ownership on startup to prevent "Permission denied" errors
 echo "Enforcing storage, cache, and database permissions..."
-chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /data
-chmod -R 770 /var/www/html/storage /var/www/html/bootstrap/cache /data
-if [ -f /data/database.sqlite ]; then
-    chmod 660 /data/database.sqlite
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/storage/database
+chmod -R 770 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/storage/database
+if [ -f /var/www/html/storage/database/database.sqlite ]; then
+    chmod 660 /var/www/html/storage/database/database.sqlite
 fi
 
 if [ $# -gt 0 ]; then

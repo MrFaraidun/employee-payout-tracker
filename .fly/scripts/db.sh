@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # Create SQLite database file if it does not exist
-mkdir -p /data
-touch /data/database.sqlite
-chmod 777 /data/database.sqlite
-chmod 777 /data
+mkdir -p /var/www/html/storage/database
+touch /var/www/html/storage/database/database.sqlite
+chmod 777 /var/www/html/storage/database/database.sqlite
+chmod 777 /var/www/html/storage/database
 
 # Run migrations
 /usr/bin/php /var/www/html/artisan migrate --force --no-ansi
@@ -17,6 +17,6 @@ if [ -z "$USER_COUNT" ] || [ "$USER_COUNT" -eq 0 ]; then
 fi
 
 # Fix SQLite database ownership and permissions after migration creation
-chown -R www-data:www-data /data
-chmod 770 /data
-chmod 660 /data/database.sqlite
+chown -R www-data:www-data /var/www/html/storage/database
+chmod 770 /var/www/html/storage/database
+chmod 660 /var/www/html/storage/database/database.sqlite
